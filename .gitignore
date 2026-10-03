@@ -1,0 +1,27 @@
+# Rust
+target/
+Cargo.lock
+
+# Tauri
+gen/
+dist/
+src-tauri/
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Release artifacts
+a980-release/
+
+# Logs
+*.log
