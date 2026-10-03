@@ -1,0 +1,37 @@
+[package]
+name = "a980-console"
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.88"
+description = "DAREU A980 console - Rust protocol core (cdylib) + Tauri 2 frontend"
+
+[lib]
+name = "a980_core"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# 协议层只依赖 HID 和序列化，不依赖任何 GUI 框架：界面侧通过 C ABI 调进来，
+# 命令行探针和 Tauri 前端共用同一份代码。
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hidapi = "2"
+# custom-protocol 是生死线：不带它，纯 cargo build 出来的壳一律去连 devUrl，
+# 用户机上 127.0.0.1 拒绝连接，界面白屏。
+tauri = { version = "2.12", features = ["custom-protocol"] }
+
+[build-dependencies]
+tauri-build = { version = "2.7", features = [] }
+
+[[bin]]
+name = "a980-probe"
+path = "src/bin/probe.rs"
+
+[[bin]]
+name = "a980-console"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+strip = true
