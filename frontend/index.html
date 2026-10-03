@@ -1,0 +1,170 @@
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A980 控制台</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="app">
+
+  <!-- 顶部：iOS 大标题 + 半透明毛玻璃 -->
+  <header id="hdr">
+    <div class="bar" data-tauri-drag-region="">
+      <div class="titlewrap">
+        <h1 id="bigTitle">A980</h1>
+        <span id="pill" class="pill on"><i class="dot"></i><span id="pillTxt">已连接 · 固件 1.2.1</span></span>
+      </div>
+      <p id="sub" class="sub">A980 [c/1]</p>
+    </div>
+  </header>
+
+  <main id="pages">
+
+    <!-- ============ 概览 ============ -->
+    <section class="page on" data-page="ov">
+      <div class="group">
+        <div class="row"><span class="lab">状态</span><span class="val" id="ovState">已连接</span></div>
+        <div class="row"><span class="lab">接口</span><span class="val mono" id="ovIface">A980 [c/1]</span></div>
+        <div class="row"><span class="lab">固件</span><span class="val mono" id="ovFw">1.2.1</span></div>
+        <div class="row"><span class="lab">硬件</span><span class="val mono" id="ovHw">1.x</span></div>
+        <div class="row"><span class="lab">序列号</span><span class="val mono" id="ovSn">未写入</span></div>
+      </div>
+
+      <p class="cap">传感器</p>
+      <div class="group">
+        <div class="row"><span class="lab">型号</span><span class="val mono" id="ovSensor">型号 12</span></div>
+        <div class="row"><span class="lab">DPI 上限 / 步进</span><span class="val mono" id="ovStep">26000 / 50</span></div>
+      </div>
+
+      <p class="cap">当前生效</p>
+      <div class="group">
+        <div class="row"><span class="lab">DPI</span><span class="val mono" id="ovDpi">3200 × 3200（第 4 档）</span></div>
+        <div class="row"><span class="lab">回报率</span><span class="val mono" id="ovRate">1000 Hz</span></div>
+        <div class="row"><span class="lab">配置</span><span class="val mono" id="ovProfile">配置 1 / 共 6 个</span></div>
+        <div class="row"><span class="lab">电池</span><span class="val mono" id="ovBat">有线 · 无电池</span></div>
+      </div>
+
+      <p class="cap">按键</p>
+      <div class="group" id="btnGroup"><button class="row sheetitem"><span class="lab">左键</span><span class="val">鼠标 · 左键</span></button><button class="row sheetitem"><span class="lab">右键</span><span class="val">鼠标 · 右键</span></button><button class="row sheetitem"><span class="lab">中键（滚轮按下）</span><span class="val">鼠标 · 中键</span></button><button class="row sheetitem"><span class="lab">侧键 · 后</span><span class="val">鼠标 · 侧键后</span></button><button class="row sheetitem"><span class="lab">侧键 · 前</span><span class="val">鼠标 · 侧键前</span></button><button class="row sheetitem"><span class="lab">滚轮上</span><span class="val">滚轮 · 上</span></button><button class="row sheetitem"><span class="lab">滚轮下</span><span class="val">滚轮 · 下</span></button><button class="row sheetitem"><span class="lab">DPI ＋ 键</span><span class="val">DPI 档位 +</span></button><button class="row sheetitem"><span class="lab">DPI － 键</span><span class="val">DPI 档位 −</span></button><button class="row sheetitem"><span class="lab">狙击键</span><span class="val">Win 锁</span></button><button class="row sheetitem"><span class="lab">底部模式键</span><span class="val">灯效切换</span></button><button class="row sheetitem"><span class="lab">按键 16</span><span class="val">鼠标 · 侧键前</span></button><button class="row sheetitem"><span class="lab">按键 17</span><span class="val">鼠标 · 侧键后</span></button><button class="row sheetitem"><span class="lab">按键 18</span><span class="val">功能 #6</span></button><button class="row sheetitem"><span class="lab">按键 19</span><span class="val">功能 #6</span></button></div>
+
+      <div class="btns">
+        <button class="btn primary" id="btnRefresh">读取当前状态</button>
+        <button class="btn" id="btnConn">断开连接</button>
+      </div>
+    </section>
+
+    <!-- ============ 性能 ============ -->
+    <section class="page" data-page="dpi">
+      <p class="cap">回报率</p>
+      <div class="group"><div class="row"><span class="lab">USB 回报率</span><span class="val mono" id="rateNow">1000 Hz</span></div></div>
+      <div class="group"><div class="seg" id="rateSeg"><button class="">125</button><button class="">250</button><button class="">500</button><button class="on">1000</button><button class="">2000</button><button class="">4000</button><button class="">8000</button></div></div>
+
+      <p class="cap">DPI 档位</p>
+      <div class="group">
+        <div class="row switchrow">
+          <span class="lab">X / Y 联动</span>
+          <button class="sw on" id="dpiLink" role="switch" aria-checked="true"><i></i></button>
+        </div>
+      </div>
+      <div class="group" id="dpiBox"><div class="stage"><span class="stg"><b></b>档位 1</span><span class="xy">X <input class="num" type="number" data-i="0" data-xy="x" min="50" max="26000" step="50" value="400"></span><span class="xy">Y <input class="num" type="number" data-i="0" data-xy="y" min="50" max="26000" step="50" value="400"></span><button class="btn sm" data-stage="1">设为当前</button></div><div class="stage"><span class="stg"><b></b>档位 2</span><span class="xy">X <input class="num" type="number" data-i="1" data-xy="x" min="50" max="26000" step="50" value="800"></span><span class="xy">Y <input class="num" type="number" data-i="1" data-xy="y" min="50" max="26000" step="50" value="800"></span><button class="btn sm" data-stage="2">设为当前</button></div><div class="stage"><span class="stg"><b></b>档位 3</span><span class="xy">X <input class="num" type="number" data-i="2" data-xy="x" min="50" max="26000" step="50" value="1600"></span><span class="xy">Y <input class="num" type="number" data-i="2" data-xy="y" min="50" max="26000" step="50" value="1600"></span><button class="btn sm" data-stage="3">设为当前</button></div><div class="stage cur"><span class="stg"><b></b>档位 4</span><span class="xy">X <input class="num" type="number" data-i="3" data-xy="x" min="50" max="26000" step="50" value="3200"></span><span class="xy">Y <input class="num" type="number" data-i="3" data-xy="y" min="50" max="26000" step="50" value="3200"></span><span class="val">使用中</span></div><div class="stage"><span class="stg"><b></b>档位 5</span><span class="xy">X <input class="num" type="number" data-i="4" data-xy="x" min="50" max="26000" step="50" value="6400"></span><span class="xy">Y <input class="num" type="number" data-i="4" data-xy="y" min="50" max="26000" step="50" value="6400"></span><button class="btn sm" data-stage="5">设为当前</button></div></div>
+      <div class="btns"><button class="btn primary" id="btnDpiSave">写入 DPI</button></div>
+
+      <p class="cap">配置</p>
+      <div class="group"><div class="seg" id="prfSeg"><button class="on">配置 1</button><button class="">配置 2</button><button class="">配置 3</button><button class="">配置 4</button><button class="">配置 5</button><button class="">配置 6</button></div></div>
+      <p class="note" id="prfNote">配置里存的是整套键位和灯效，切换不会改这里显示的值。</p>
+    </section>
+
+    <!-- ============ 灯光 ============ -->
+    <section class="page" data-page="led">
+      <p class="cap">灯区</p>
+      <div class="group"><div class="seg" id="ledSeg"><button class="on">灯区 1</button></div></div>
+
+      <p class="cap">灯效</p>
+      <div class="group"><div class="chips" id="effChips"><button class="chip">常亮</button><button class="chip">呼吸</button><button class="chip on">波浪</button><button class="chip">星空</button><button class="chip">激击</button><button class="chip">霓虹</button><button class="chip">跑马灯</button></div></div>
+
+      <p class="cap">速度与亮度</p>
+      <div class="group">
+        <div class="row slider">
+          <span class="lab">速度</span>
+          <input type="range" id="ledSpeed" min="1" max="5" step="1" value="2">
+          <span class="val mono" id="ledSpeedVal">0</span>
+        </div>
+        <div class="row slider">
+          <span class="lab">亮度</span>
+          <input type="range" id="ledBright" min="0" max="255" step="5" value="255">
+          <span class="val mono" id="ledBrightVal">100%</span>
+        </div>
+      </div>
+
+      <p class="cap">颜色</p>
+      <div class="group"><div class="colors" id="colorBox"><button class="addcolor">+</button></div></div>
+      <div class="btns"><button class="btn primary" id="btnLedSave">应用到灯区</button></div>
+      <p class="note">颜色数量由灯效本身决定：常亮类一色，呼吸、彩虹这类多色。点色块可以改。</p>
+    </section>
+
+    <!-- ============ 系统 ============ -->
+    <section class="page" data-page="sys">
+      <p class="cap">屏幕</p>
+      <div class="group">
+        <div class="row wide"><span class="lab">界面语言</span><div class="seg small" id="langSeg"><button class="on">中文</button><button class="">English</button></div></div>
+        <div class="row hidden" id="brightRow">
+          <span class="lab">屏幕亮度</span>
+          <input type="range" id="lcdBright" min="1" max="5" step="1" value="3">
+          <span class="val mono" id="lcdBrightVal">3</span>
+        </div>
+      </div>
+      <p class="note">屏幕内容由鼠标固件自己渲染，这里只控制固件开放出来的设置项。</p>
+
+      <p class="cap">维护</p>
+      <div class="group">
+        <div class="row"><span class="lab">接口记忆</span><span class="val mono" id="memIface">A980 [c/1]</span></div>
+      </div>
+      <div class="btns">
+        <button class="btn" id="btnForget">重新探测接口</button>
+        <button class="btn danger" id="btnReset">恢复出厂设置</button>
+      </div>
+
+      <p class="cap">运行日志</p>
+      <div class="group"><pre id="logBox" class="log">连上 A980 [c/1]（固件 1.2.1）</pre></div>
+
+      <p class="cap">关于</p>
+      <div class="group">
+        <div class="row"><span class="lab">版本</span><span class="val mono">1.0.0</span></div>
+        <div class="row"><span class="lab">协议</span><span class="val">tg · HID Feature Report</span></div>
+        <div class="row"><span class="lab">联网</span><span class="val">从不联网</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 底部标签栏：iOS 风格 -->
+  <nav id="tabbar">
+    <button class="tab on" data-page="ov">
+      <svg viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m5 13v-7m5 7V8"></path></svg><span>概览</span>
+    </button>
+    <button class="tab" data-page="dpi">
+      <svg viewBox="0 0 24 24"><path d="M4 12h4l2-6 4 12 2-6h4"></path></svg><span>性能</span>
+    </button>
+    <button class="tab" data-page="led">
+      <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.5 10.9V16h-7v-2.1A6 6 0 0 1 12 3Z"></path></svg><span>灯光</span>
+    </button>
+    <button class="tab" data-page="sys">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.65 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.03Z"></path></svg><span>系统</span>
+    </button>
+  </nav>
+
+  <!-- 底部动作面板 -->
+  <div id="sheet" class="sheet">
+    <div class="sheetcard">
+      <h3 id="sheetTitle"></h3>
+      <div id="sheetBody"></div>
+    </div>
+    <button class="sheetcancel" id="sheetCancel">取消</button>
+  </div>
+  <div id="scrim"></div>
+
+  <div id="toasts"></div>
+</div>
+<script src="app.js"></script>
+
+
+</body></html>
