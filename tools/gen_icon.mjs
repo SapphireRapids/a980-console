@@ -139,4 +139,4 @@ if (process.argv[3]) {
   const icoPngs = [16, 24, 32, 48, 64, 128, 256].map((S) => ({ S, png: png(S, render(S)) }));
   writeFileSync(join(outDir, "icon.ico"), ico(icoPngs));
   console.log("wrote icon set to", outDir);
-           }
+}
