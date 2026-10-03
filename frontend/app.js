@@ -664,4 +664,4 @@ if (IN_TAURI) {
   setInterval(pull, 3000);
 } else {
   apply(mock);
-             }
+}
